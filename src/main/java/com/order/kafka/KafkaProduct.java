@@ -2,11 +2,16 @@ package com.order.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.order.dto.Field;
 import com.order.dto.OrderDto;
+import com.order.dto.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -15,7 +20,7 @@ public class KafkaProduct {
 
     private final KafkaTemplate kafkaTemplate;
 
-    public OrderDto send(String topic, OrderDto orderDto) {
+    public Object send(String topic, Object orderDto) {
         ObjectMapper mapper = new ObjectMapper();
         String jsonInString = "";
 

@@ -2,6 +2,7 @@ package com.order.controller;
 
 import com.order.dto.OrderDto;
 import com.order.kafka.KafkaProduct;
+import com.order.kafka.OrderProduct;
 import com.order.service.OrderService;
 import com.order.vo.RequestOrder;
 import com.order.vo.ResponseOrder;
@@ -25,6 +26,8 @@ public class OrderRestController {
 
     private final KafkaProduct kafkaProduct;
 
+    private final OrderProduct orderProduct;
+
     @PostMapping("/{userId}/order")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId, @RequestBody RequestOrder requestOrder) {
 
@@ -35,6 +38,7 @@ public class OrderRestController {
         ResponseOrder responseOrder = modelMapper.map(resultOrderDto, ResponseOrder.class);
 
         kafkaProduct.send("test-topic", orderDto);
+        orderProduct.send("orders", orderDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
 
